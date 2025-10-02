@@ -30,32 +30,30 @@ if not st.session_state.authenticated:
 # Helper: Apply Tajweed Rules
 # ---------------------------
 def apply_tajweed(text):
-    # Expand disjointed letters (huruf al-muqattaʿāt)
+    # Huruf al-Muqattaʿat (disjointed letters)
     replacements = {
-        "يسٓ": "يــــا ســـــيـــــن",
-        "الم": "أ لــــيـــــف لــــام مــــيــــم",
-        "حم": "حــــا مــــيــــم",
-        "طه": "طــــا هــــا",
-        "طسم": "طــــا ســــيــــن مــــيــــم",
-        "كهيعص": "كــــاف هــــا يـــــا عــــيــــن صـــــاد",
-        "عسق": "عــــيــــن ســـــيــــن قــــاف",
-        "نٓ": "نـــــــو ن"
+        "يسٓ": "يا سين",
+        "الم": "ألف لام ميم",
+        "حم": "حا ميم",
+        "طه": "طا ها",
+        "طسم": "طا سين ميم",
+        "كهيعص": "كاف ها يا عين صاد",
+        "عسق": "عين سين قاف",
+        "نٓ": "نون"
     }
-
     for k, v in replacements.items():
         text = re.sub(k, v, text)
 
-    # Handle common waqf (pause) symbols
+    # Waqf signs → convert to silent pauses
     waqf_map = {
-        "۝": " [PAUSE: end of verse] ",
-        "م": " [MANDATORY PAUSE] ",
-        "ط": " [COMPLETE PAUSE] ",
-        "ج": " [OPTIONAL PAUSE] ",
-        "ق": " [PERMISSIBLE PAUSE] ",
-        "لا": " [DO NOT PAUSE] ",
-        "قف": " [STOP HERE] "
+        "۝": " … ",
+        "م": " … ",
+        "ط": " … ",
+        "ج": " , ",
+        "ق": " , ",
+        "لا": "",   # no pause
+        "قف": " … "
     }
-
     for k, v in waqf_map.items():
         text = text.replace(k, v)
 
@@ -73,7 +71,7 @@ raw_text = st.text_area(
     placeholder="بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\n\nIn the name of Allah, the Entirely Merciful, the Especially Merciful..."
 )
 
-# Preprocess input for tajweed
+# Preprocess text for tajweed
 text = apply_tajweed(raw_text)
 
 st.write("")
@@ -82,23 +80,21 @@ st.write("")
 # Permanent Instructions
 # ---------------------------
 instructions = """
-For Arabic recitation:
-- Recite like a professional Qur’an qāri’ with **full tajweed**. 
-- Apply rules: **madd (elongation), ghunnah (nasal sounds), qalqalah (echo), ikhfāʾ, idghām, and waqf (pauses)**.
-- At the **end of each verse or waqf symbol (۝, م, ط, ج, قف, etc.)**, pause naturally, just as in tajweed.
-- If the verse has disjointed letters (ḥurūf al-muqattaʿāt, like يسٓ, الم, حم, نٓ), 
-  recite each letter separately with **elongated madd** (e.g., يسٓ → “Yāaaa Sīīn”).
-- Recite **very slowly, with reverence, humility, and realistic breathing**, like an imam leading prayer. 
-- The recitation must sound **human and soulful, never robotic**.
+For Arabic:
+- Recite exactly like a professional Qur’an qāri’ with **full tajweed**.
+- Apply rules: madd (elongation), ghunnah (nasal), qalqalah (echo), and proper waqf (pauses).
+- When you see “…” or “,” in the text, **pause naturally but do not read them aloud**.
+- If a verse contains disjointed letters (يسٓ, الم, حم, نٓ), recite each separately with full elongation (e.g., يسٓ → “Yāaa Sīn”).
+- Recite **very slowly, reverently, and naturally with breathing**, like an imam leading prayer.
+- It must sound **human, soulful, and never robotic**.
 
-For English narration:
-- After completing each Arabic verse, **always narrate the English translation**.
-- Speak calmly, warmly, and professionally (like David Attenborough or BBC World Service).
-- Use measured pacing, clear emphasis, and respectful tone, like a professional audiobook.
+For English:
+- After each Arabic verse, narrate the English translation clearly.
+- Use a calm, professional, documentary-style tone (like David Attenborough or BBC World Service).
+- Speak warmly and respectfully, like a professional audiobook.
 
-General:
-- Always **separate Arabic and English with a pause**.
-- Arabic flows as soulful qirāʾt with tajweed, English follows softly and professionally.
+Always separate Arabic and English with a pause.
+Arabic must flow as soulful qirāʾt with tajweed, English follows softly and professionally.
 """
 
 # ---------------------------
