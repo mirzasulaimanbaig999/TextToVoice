@@ -1,18 +1,17 @@
 import streamlit as st
 import openai
 import os
-import re
 
 # Load API key securely from Streamlit secrets
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Title
 st.title("🎙️ TextToVoice (Arabic Qur’an + English Narration)")
-st.write("Paste Surah text (Arabic + English) below to generate soulful recitation with tajweed and Fable voice narration.")
+st.write("Paste Surah text (Arabic + English) below to generate soulful recitation with Fable voice.")
 
-# ---------------------------
-# Password Protection
-# ---------------------------
+# -----------------------------
+# Password Protection (fixed with st.session_state)
+# -----------------------------
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
@@ -21,85 +20,40 @@ if not st.session_state.authenticated:
     if st.button("🔑 Submit Password"):
         if password == os.getenv("APP_PASSWORD"):
             st.session_state.authenticated = True
-            st.rerun()  # unlock immediately
+            st.success("✅ Access granted. You can now use the app.")
         else:
             st.error("❌ Wrong password. Try again.")
     st.stop()
 
-# ---------------------------
-# Helper: Apply Tajweed Rules
-# ---------------------------
-def apply_tajweed(text):
-    # Huruf al-Muqattaʿat (disjointed letters)
-    replacements = {
-        "يسٓ": "يا سين",
-        "الم": "ألف لام ميم",
-        "حم": "حا ميم",
-        "طه": "طا ها",
-        "طسم": "طا سين ميم",
-        "كهيعص": "كاف ها يا عين صاد",
-        "عسق": "عين سين قاف",
-        "نٓ": "نون"
-    }
-    for k, v in replacements.items():
-        text = re.sub(k, v, text)
-
-    # Waqf signs → convert to silent pauses
-    waqf_map = {
-        "۝": " … ",
-        "م": " … ",
-        "ط": " … ",
-        "ج": " , ",
-        "ق": " , ",
-        "لا": "",   # no pause
-        "قف": " … "
-    }
-    for k, v in waqf_map.items():
-        text = text.replace(k, v)
-
-    return text
-
-# ---------------------------
+# -----------------------------
 # Input Box (mobile-friendly)
-# ---------------------------
+# -----------------------------
 st.markdown("### ✍️ Enter Surah Content")
-raw_text = st.text_area(
+text = st.text_area(
     "Paste Surah (Arabic + English):",
     value=st.session_state.get("text_input", ""),
     key="text_input",
     height=250,
-    placeholder="بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\n\nIn the name of Allah, the Entirely Merciful, the Especially Merciful..."
+    placeholder="﷽\n\nIn the name of Allah, the Entirely Merciful, the Especially Merciful..."
 )
 
-# Preprocess text for tajweed
-text = apply_tajweed(raw_text)
+st.write("")  # spacing
 
-st.write("")
-
-# ---------------------------
+# -----------------------------
 # Permanent Instructions
-# ---------------------------
+# -----------------------------
 instructions = """
-For Arabic:
-- Recite exactly like a professional Qur’an qāri’ with **full tajweed**.
-- Apply rules: madd (elongation), ghunnah (nasal), qalqalah (echo), and proper waqf (pauses).
-- When you see “…” or “,” in the text, **pause naturally but do not read them aloud**.
-- If a verse contains disjointed letters (يسٓ, الم, حم, نٓ), recite each separately with full elongation (e.g., يسٓ → “Yāaa Sīn”).
-- Recite **very slowly, reverently, and naturally with breathing**, like an imam leading prayer.
-- It must sound **human, soulful, and never robotic**.
+For Arabic text: Recite exactly like a professional Qur’an qāri’ with full tajweed. Use very long qirāʾt: stretch the vowels (madd) fully, elongate every sound naturally, sustain ghunnah (nasal sounds), and apply proper waqf (pauses) at the end of each verse. 
+The Arabic recitation must be delivered in a strong, clear, and resonant voice — louder and more powerful than the English narration — with depth and richness, like an imam reciting in a masjid. Keep the recitation extremely slow, soulful, and natural, with realistic breathing and deep reverence. It must sound completely human and never robotic.  
 
-For English:
-- After each Arabic verse, narrate the English translation clearly.
-- Use a calm, professional, documentary-style tone (like David Attenborough or BBC World Service).
-- Speak warmly and respectfully, like a professional audiobook.
+For English text: After completing each Arabic verse, always narrate the English translation. Do not skip any English text. Use the natural strength of the Fable voice: calm, professional, warm, and clear, similar to David Attenborough or a BBC World Service presenter. Speak with measured pacing, smooth emphasis, and a respectful, documentary-style delivery. The English narration must sound fully human, like a professional audiobook.  
 
-Always separate Arabic and English with a pause.
-Arabic must flow as soulful qirāʾt with tajweed, English follows softly and professionally.
+Always separate Arabic and English with a clear, natural pause. Arabic should flow like a live qirāʾt recitation in a strong and resonant voice, while English should follow in a softer, professional narration tone — creating a balanced, natural experience.
 """
 
-# ---------------------------
+# -----------------------------
 # Audio Generation
-# ---------------------------
+# -----------------------------
 if st.button("🎤 Generate Audio"):
     if not text.strip():
         st.warning("⚠️ Please paste Surah text first.")
@@ -107,8 +61,8 @@ if st.button("🎤 Generate Audio"):
         out_file = "surah_output.mp3"
         with openai.audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts",
-            voice="fable",  # locked to Fable voice
-            input=text
+            voice="fable",   # locked to Fable
+            input=text + "\n\n" + instructions
         ) as response:
             response.stream_to_file(out_file)
 
