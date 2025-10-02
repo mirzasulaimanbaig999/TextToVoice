@@ -17,7 +17,10 @@ if password != app_password:
     st.stop()
 
 # Input box
-text = st.text_area("✍️ Paste Surah (Arabic + English):")
+if "text_input" not in st.session_state:
+    st.session_state.text_input = ""
+
+text = st.text_area("✍️ Paste Surah (Arabic + English):", value=st.session_state.text_input, key="text_input")
 
 # Permanent Instructions
 instructions = """
