@@ -28,12 +28,18 @@ else:
     st.success("✅ Access granted. You can now use the app.")
 
 # ---------------------------
-# Input Box
+# Input Box (mobile-friendly fix)
 # ---------------------------
-if "text_input" not in st.session_state:
-    st.session_state.text_input = ""
+st.markdown("### ✍️ Enter Surah Content")
+text = st.text_area(
+    "Paste Surah (Arabic + English):",
+    value=st.session_state.get("text_input", ""),
+    key="text_input",
+    height=250,
+    placeholder="بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\n\nIn the name of Allah, the Entirely Merciful, the Especially Merciful..."
+)
 
-text = st.text_area("✍️ Paste Surah (Arabic + English):", value=st.session_state.text_input, key="text_input")
+st.write("")  # Adds a bit of space before the button
 
 # ---------------------------
 # Permanent Instructions
@@ -56,7 +62,7 @@ if st.button("🎤 Generate Audio"):
         out_file = "surah_output.mp3"
         with openai.audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts",
-            voice="fable",  # Locked to Fable voice
+            voice="fable",  # locked to Fable voice
             input=text
         ) as response:
             response.stream_to_file(out_file)
