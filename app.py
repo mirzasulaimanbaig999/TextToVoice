@@ -10,7 +10,7 @@ st.title("🎙️ TextToVoice (Arabic Qur’an + English Narration)")
 st.write("Paste Surah text (Arabic + English) below to generate soulful recitation with Fable voice.")
 
 # ---------------------------
-# Password Protection (Final Fix)
+# Password Protection (Final Fix with st.rerun)
 # ---------------------------
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -20,7 +20,7 @@ if not st.session_state.authenticated:
     if st.button("🔑 Submit Password"):
         if password == os.getenv("APP_PASSWORD"):
             st.session_state.authenticated = True
-            st.experimental_rerun()  # Immediately reload app in unlocked mode
+            st.rerun()  # Immediately reload app in unlocked mode
         else:
             st.error("❌ Wrong password. Try again.")
     st.stop()
