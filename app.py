@@ -36,7 +36,7 @@ if st.button("🎤 Generate Audio"):
         with openai.audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts",
             voice="fable",  # locked to Fable voice
-            input=f"{instructions}\n{text}"
+            input=text
         ) as response:
             response.stream_to_file(out_file)
 
