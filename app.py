@@ -9,9 +9,11 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 st.title("🎙️ TextToVoice (Arabic Qur’an + English Narration)")
 st.write("Paste Surah text (Arabic + English) below to generate soulful recitation with Fable voice.")
 
-# Password protection
+# Password protection (from Secrets)
+app_password = os.getenv("APP_PASSWORD")
+
 password = st.text_input("Enter access password:", type="password")
-if password != "mysecret123":  # change this password later for safety
+if password != app_password:
     st.stop()
 
 # Input box
