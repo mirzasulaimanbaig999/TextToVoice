@@ -7,7 +7,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Title
 st.title("🎙️ TextToVoice (Arabic Qur’an + English Narration)")
-st.write("Paste Surah text (Arabic + English) below to generate soulful recitation with Fable voice.")
+st.write("Paste Surah text (Arabic + English) below to generate soulful recitation.")
 
 # ---------------------------
 # Password Protection (Final Fix with st.rerun)
