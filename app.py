@@ -6,8 +6,8 @@ import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Title
-st.title("🎙️ TextToVoice (Arabic Qur’an + English Narration)")
-st.write("Paste Surah text (Arabic + English) below to generate soulful recitation.")
+st.title("🎙️ TextToVoice (Turn Text into Life-Like Speech)")
+st.write("Type or paste any text and our AI transforms it into expressive, studio-quality speech in seconds.")
 
 # ---------------------------
 # Password Protection (Final Fix with st.rerun)
