@@ -30,7 +30,7 @@ if not st.session_state.authenticated:
 # ---------------------------
 st.markdown("### ✍️ Enter Surah Content")
 text = st.text_area(
-    "Paste Surah (Arabic + English):",
+    "Paste your words and let them talk:",
     value=st.session_state.get("text_input", ""),
     key="text_input",
     height=250,
