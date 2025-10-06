@@ -34,7 +34,7 @@ text = st.text_area(
     value=st.session_state.get("text_input", ""),
     key="text_input",
     height=250,
-    placeholder="بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ\n\nIn the name of Allah, the Entirely Merciful, the Especially Merciful..."
+    placeholder="Enter your script to generate voice..."
 )
 
 st.write("")  # Adds a bit of space before the button
