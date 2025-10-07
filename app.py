@@ -28,7 +28,7 @@ if not st.session_state.authenticated:
 # ---------------------------
 # Input Box (mobile-friendly fix)
 # ---------------------------
-st.markdown("### ✍️ Enter Surah Content")
+st.markdown("### ✍️ Enter the Content")
 text = st.text_area(
     "Paste your words and let them talk:",
     value=st.session_state.get("text_input", ""),
