@@ -67,4 +67,4 @@ if st.button("🎤 Generate Audio"):
 
         st.audio(out_file)
         with open(out_file, "rb") as f:
-            st.download_button("⬇️ Download Audio", f, file_name="surah_output.mp3")
+            st.download_button("⬇️ Download Audio", f, file_name="Text_To_Voice.mp.mp3")
