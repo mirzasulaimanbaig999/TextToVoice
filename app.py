@@ -57,7 +57,7 @@ if st.button("🎤 Generate Audio"):
     if not text.strip():
         st.warning("⚠️ Please paste Surah text first.")
     else:
-        out_file = "surah_output.mp3"
+        out_file = "Text_To_Voice.mp3"
         with openai.audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts",
             voice="fable",  # locked to Fable voice
